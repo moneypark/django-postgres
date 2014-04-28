@@ -43,7 +43,10 @@ def register_bitstring_types(connection):
         cur.execute("SELECT NULL::VARBIT")
         varbit_oid = cur.description[0].type_code
     bit_caster = ext.new_type((bit_oid, varbit_oid), 'BIT', cast_bits)
-    ext.register_type(bit_caster, connection)
+
+    # There are conflict with `django-postgrespool`.
+    # From this app we use just `View` and we no need this functionality.
+    # ext.register_type(bit_caster, connection)
 
 
 def register_types_on_connection_creation(connection, sender, *args, **kwargs):
