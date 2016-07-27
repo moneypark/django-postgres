@@ -5,7 +5,7 @@ import copy
 import logging
 import re
 
-from django.db import connection, transaction
+from django.db import connection
 from django.db import models
 import psycopg2
 
@@ -89,7 +89,7 @@ def create_view(connection, view_name, view_query, update=True, force=False):
     the new one.
     """
     cursor_wrapper = connection.cursor()
-    cursor = cursor_wrapper.cursor.cursor
+    cursor = cursor_wrapper.cursor
     try:
         force_required = False
         # Determine if view already exists.
@@ -120,7 +120,6 @@ def create_view(connection, view_name, view_query, update=True, force=False):
         else:
             ret = 'FORCE_REQUIRED'
 
-        transaction.commit_unless_managed()
         return ret
     finally:
         cursor_wrapper.close()
